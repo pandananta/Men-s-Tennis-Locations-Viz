@@ -2,17 +2,20 @@ function countCountries(year){
 	var countryCount = {}
 	for(var i =0; i<MENS_TENNIS_STATS.length; i++){
 		if (MENS_TENNIS_STATS[i]["year"]== year){
-			if (countryCount[MENS_TENNIS_STATS[i]["country1"]] == null){
-				countryCount[MENS_TENNIS_STATS[i]["country1"]] = 1;
+			var country1 = MENS_TENNIS_STATS[i]["country1"];
+			var country2 = MENS_TENNIS_STATS[i]["country2"];
+			if (countryCount[country1] == null){
+				countryCount[country1] = {"total":1, "wins":1, "lat": COUNTRIES[country1]["Latitude"], "long": COUNTRIES[country1]["Longitude"], "name": COUNTRIES[country1]["Name"]};
 			}
 			else{
-				countryCount[MENS_TENNIS_STATS[i]["country1"]] += 1;
+				countryCount[country1]["total"] +=1;
+				countryCount[country1]["wins"] +=1;
 			}
-			if (countryCount[MENS_TENNIS_STATS[i]["country2"]] == null){
-				countryCount[MENS_TENNIS_STATS[i]["country2"]] = 1;
+			if (countryCount[country2] == null){
+				countryCount[country2] = {"total":1, "wins":0, "lat": COUNTRIES[country2]["Latitude"], "long": COUNTRIES[country2]["Longitude"], "name": COUNTRIES[country2]["Name"]};
 			}
 			else{
-				countryCount[MENS_TENNIS_STATS[i]["country2"]] += 1;
+				countryCount[country2]["total"] +=1;
 			}
 		}
 	}
@@ -20,12 +23,11 @@ function countCountries(year){
 	textSpace.innerHTML = "<h1> In " +year+ " </h1><ul>";
 	var countryNumber = 1;
 	for(i in countryCount){
-		textSpace.innerHTML += "<li>"+countryNumber+". "+i+" played "+countryCount[i] + " games. The coords for " + i +" are: "+ COUNTRIES[i]["Latitude"] +", " + COUNTRIES[i]["Longitude"] + "</li>";
+		var percent = (100 * countryCount[i]["wins"] / countryCount[i]["total"]).toFixed(2); 
+		textSpace.innerHTML += "<li>"+countryNumber+". "+countryCount[i]["name"]+" played "+countryCount[i]["total"]+" games and won "+percent+"%. Coords: "+countryCount[i]["lat"]+" ,"+countryCount[i]["long"];
 		countryNumber ++;
 	}
 	textSpace += "</ul>";
-
-	
 }
 
 function resetStats(){
