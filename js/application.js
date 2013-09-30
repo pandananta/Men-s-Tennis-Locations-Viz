@@ -1,6 +1,5 @@
 function countCountries(year){
 	var countryCount = {}
-
 	for(var i =0; i<MENS_TENNIS_STATS.length; i++){
 		if (MENS_TENNIS_STATS[i]["year"]== year){
 			if (countryCount[MENS_TENNIS_STATS[i]["country1"]] == null){
@@ -17,54 +16,44 @@ function countCountries(year){
 			}
 		}
 	}
+	var textSpace = document.getElementById('statsArea')
+	textSpace.innerHTML = "<h1> In " +year+ " </h1><ul>";
 	var countryNumber = 1;
 	for(i in countryCount){
-		console.log(countryNumber+". "+i + " played " + countryCount[i] +" in " + year);
+		textSpace.innerHTML += "<li>"+countryNumber+". "+i+" played "+countryCount[i] + " games. The coords for " + i +" are: "+ COUNTRIES[i]["Latitude"] +", " + COUNTRIES[i]["Longitude"] + "</li>";
 		countryNumber ++;
 	}
+	textSpace += "</ul>";
+
+	
 }
 
-function countPlayers(){
-	var playerCount = {}
-
-	for(var i =0; i<MENS_TENNIS_STATS.length; i++){
-		if (playerCount[MENS_TENNIS_STATS[i]["player1"]] == null){
-			playerCount[MENS_TENNIS_STATS[i]["player1"]] = 1;
-		}
-		else{
-			playerCount[MENS_TENNIS_STATS[i]["player1"]] += 1;
-		}
-		if (playerCount[MENS_TENNIS_STATS[i]["player2"]] == null){
-			playerCount[MENS_TENNIS_STATS[i]["player2"]] = 1;
-		}
-		else{
-			playerCount[MENS_TENNIS_STATS[i]["player2"]] += 1;
-		}
-	}
-	var playerNumber = 1;
-	for(i in playerCount){
-		console.log(playerNumber+". "+i + "played " + playerCount[i] +" games in the last 11 years.");
-		playerNumber ++;
-	}
-}
-
-function aMStats(){
-	var victories = {}
-
-	for(var i =0; i<MENS_TENNIS_STATS.length; i++){
-		if(MENS_TENNIS_STATS[i]["player1"]=="Andy Murray"){
-			if (victories[MENS_TENNIS_STATS[i]["year"]] == null){
-				victories[MENS_TENNIS_STATS[i]["year"]] = 1;
+function resetStats(){
+	var countryCount = {}
+		for(var i =0; i<MENS_TENNIS_STATS.length; i++){
+			if (countryCount[MENS_TENNIS_STATS[i]["country1"]] == null){
+				countryCount[MENS_TENNIS_STATS[i]["country1"]] = 1;
 			}
 			else{
-				victories[MENS_TENNIS_STATS[i]["year"]] += 1;
+				countryCount[MENS_TENNIS_STATS[i]["country1"]] += 1;
+			}
+			if (countryCount[MENS_TENNIS_STATS[i]["country2"]] == null){
+				countryCount[MENS_TENNIS_STATS[i]["country2"]] = 1;
+			}
+			else{
+				countryCount[MENS_TENNIS_STATS[i]["country2"]] += 1;
 			}
 		}
-	}
-	for(i in victories){
-		console.log("Andy Murray had "+ victories[i] +" victories in " + i + ".\n");
-	}
+		var textSpace = document.getElementById('statsArea')
+		textSpace.innerHTML = "<h1> From 2003 to 2013 </h1><ul>";
+		var countryNumber = 1;
+		for(i in countryCount){
+			textSpace.innerHTML += "<li>" + countryNumber+". "+i + " played " + countryCount[i] + " games. </li>";
+			countryNumber ++;
+		}
+		textSpace += "</ul>";
 }
+
 
 var MENS_TENNIS_STATS = [
 {"year":2012,"gender":"m","tid":4,"mid":591633,"player1":"Andy Murray","player2":"Novak Djokovic","country1":"GBR","country2":"SRB","firstServe1":"65%","firstServe2":"62%","ace1":5,"ace2":7,"double1":4,"double2":5,"firstPointWon1":"62%","firstPointWon2":"63%","secPointWon1":"48%","secPointWon2":"42%","fastServe1":212,"fastServe2":205,"avgFirstServe1":178,"avgFirstServe2":186,"avgSecServe1":146,"avgSecServe2":146,"break1":"47%","break2":"50%","return1":"44%","return2":"42%","total1":160,"total2":155,"winner1":31,"winner2":40,"error1":56,"error2":65,"net1":"67%","net2":"70%"},
@@ -1366,3 +1355,249 @@ var MENS_TENNIS_STATS = [
 {"year":2013,"gender":"m","tid":4,"mid":671167,"player1":"Novak Djokovic","player2":"Stanislas Wawrinka","country1":"SRB","country2":"SUI","firstServe1":"67%","firstServe2":"50%","ace1":9,"ace2":8,"double1":6,"double2":7,"firstPointWon1":"69%","firstPointWon2":"71%","secPointWon1":"56%","secPointWon2":"50%","fastServe1":199,"fastServe2":222,"avgFirstServe1":180,"avgFirstServe2":188,"avgSecServe1":149,"avgSecServe2":149,"break1":"21%","break2":"56%","return1":"40%","return2":"36%","total1":165,"total2":165,"winner1":38,"winner2":57,"error1":46,"error2":69,"net1":"73%","net2":"63%"},
 {"year":2013,"gender":"m","tid":4,"mid":671162,"player1":"Rafael Nadal","player2":"Richard Gasquet","country1":"ESP","country2":"FRA","firstServe1":"71%","firstServe2":"64%","ace1":3,"ace2":6,"double1":1,"double2":4,"firstPointWon1":"76%","firstPointWon2":"71%","secPointWon1":"57%","secPointWon2":"45%","fastServe1":197,"fastServe2":202,"avgFirstServe1":176,"avgFirstServe2":178,"avgSecServe1":141,"avgSecServe2":141,"break1":"100%","break2":"17%","return1":"38%","return2":"29%","total1":102,"total2":84,"winner1":35,"winner2":26,"error1":24,"error2":32,"net1":"79%","net2":"69%"},
 {"year":2013,"gender":"m","tid":4,"mid":671831,"player1":"Rafael Nadal","player2":"Novak Djokovic","country1":"ESP","country2":"SRB","firstServe1":"64%","firstServe2":"68%","ace1":1,"ace2":6,"double1":1,"double2":2,"firstPointWon1":"65%","firstPointWon2":"58%","secPointWon1":"56%","secPointWon2":"48%","fastServe1":201,"fastServe2":204,"avgFirstServe1":176,"avgFirstServe2":180,"avgSecServe1":141,"avgSecServe2":141,"break1":"58%","break2":"27%","return1":"45%","return2":"38%","total1":121,"total2":102,"winner1":27,"winner2":46,"error1":20,"error2":53,"net1":"74%","net2":"61%"}]
+
+
+var COUNTRIES = {
+"AFG":{"Latitude":33,"Longitude":65,"Name":"Afghanistan"},
+"ALB":{"Latitude":41,"Longitude":20,"Name":"Albania"},
+"DZA":{"Latitude":28,"Longitude":3,"Name":"Algeria"},
+"ASM":{"Latitude":-14.3333,"Longitude":-170,"Name":"American Samoa"},
+"AND":{"Latitude":42.5,"Longitude":1.6,"Name":"Andorra"},
+"AGO":{"Latitude":-12.5,"Longitude":18.5,"Name":"Angola"},
+"AIA":{"Latitude":18.25,"Longitude":-63.1667,"Name":"Anguilla"},
+"ATA":{"Latitude":-90,"Longitude":0,"Name":"Antarctica"},
+"ATG":{"Latitude":17.05,"Longitude":-61.8,"Name":"Antigua and Barbuda"},
+"ARG":{"Latitude":-34,"Longitude":-64,"Name":"Argentina"},
+"ARM":{"Latitude":40,"Longitude":45,"Name":"Armenia"},
+"ARU":{"Latitude":12.5,"Longitude":-69.9667,"Name":"Aruba"},
+"AUS":{"Latitude":-27,"Longitude":133,"Name":"Australia"},
+"AUT":{"Latitude":47.3333,"Longitude":13.3333,"Name":"Austria"},
+"AZE":{"Latitude":40.5,"Longitude":47.5,"Name":"Azerbaijan"},
+"BHS":{"Latitude":24.25,"Longitude":-76,"Name":"Bahamas"},
+"BHR":{"Latitude":26,"Longitude":50.55,"Name":"Bahrain"},
+"BGD":{"Latitude":24,"Longitude":90,"Name":"Bangladesh"},
+"BRB":{"Latitude":13.1667,"Longitude":-59.5333,"Name":"Barbados"},
+"BLR":{"Latitude":53,"Longitude":28,"Name":"Belarus"},
+"BEL":{"Latitude":50.8333,"Longitude":4,"Name":"Belgium"},
+"BLZ":{"Latitude":17.25,"Longitude":-88.75,"Name":"Belize"},
+"BEN":{"Latitude":9.5,"Longitude":2.25,"Name":"Benin"},
+"BMU":{"Latitude":32.3333,"Longitude":-64.75,"Name":"Bermuda"},
+"BTN":{"Latitude":27.5,"Longitude":90.5,"Name":"Bhutan"},
+"BOL":{"Latitude":-17,"Longitude":-65,"Name":"Bolivia, Plurinational State of"},
+"BIH":{"Latitude":44,"Longitude":18,"Name":"Bosnia and Herzegovina"},
+"BWA":{"Latitude":-22,"Longitude":24,"Name":"Botswana"},
+"BVT":{"Latitude":-54.4333,"Longitude":3.4,"Name":"Bouvet Island"},
+"BRA":{"Latitude":-10,"Longitude":-55,"Name":"Brazil"},
+"IOT":{"Latitude":-6,"Longitude":71.5,"Name":"British Indian Ocean Territory"},
+"BRN":{"Latitude":4.5,"Longitude":114.6667,"Name":"Brunei Darussalam"},
+"BUL":{"Latitude":43,"Longitude":25,"Name":"Bulgaria"},
+"BFA":{"Latitude":13,"Longitude":-2,"Name":"Burkina Faso"},
+"BDI":{"Latitude":-3.5,"Longitude":30,"Name":"Burundi"},
+"KHM":{"Latitude":13,"Longitude":105,"Name":"Cambodia"},
+"CMR":{"Latitude":6,"Longitude":12,"Name":"Cameroon"},
+"CAN":{"Latitude":60,"Longitude":-95,"Name":"Canada"},
+"CPV":{"Latitude":16,"Longitude":-24,"Name":"Cape Verde"},
+"CYM":{"Latitude":19.5,"Longitude":-80.5,"Name":"Cayman Islands"},
+"CTA":{"Latitude":7,"Longitude":21,"Name":"Central African Republic"},
+"TCD":{"Latitude":15,"Longitude":19,"Name":"Chad"},
+"CHI":{"Latitude":-30,"Longitude":-71,"Name":"Chile"},
+"CHN":{"Latitude":35,"Longitude":105,"Name":"China"},
+"CXR":{"Latitude":-10.5,"Longitude":105.6667,"Name":"Christmas Island"},
+"CCK":{"Latitude":-12.5,"Longitude":96.8333,"Name":"Cocos (Keeling) Islands"},
+"COL":{"Latitude":4,"Longitude":-72,"Name":"Colombia"},
+"COM":{"Latitude":-12.1667,"Longitude":44.25,"Name":"Comoros"},
+"COG":{"Latitude":-1,"Longitude":15,"Name":"Congo"},
+"COD":{"Latitude":0,"Longitude":25,"Name":"Congo, the Democratic Republic of the"},
+"COK":{"Latitude":-21.2333,"Longitude":-159.7667,"Name":"Cook Islands"},
+"CRI":{"Latitude":10,"Longitude":-84,"Name":"Costa Rica"},
+"CIV":{"Latitude":8,"Longitude":-5,"Name":"CÃ´te d'Ivoire"},
+"CRO":{"Latitude":45.1667,"Longitude":15.5,"Name":"Croatia"},
+"CUB":{"Latitude":21.5,"Longitude":-80,"Name":"Cuba"},
+"CYP":{"Latitude":35,"Longitude":33,"Name":"Cyprus"},
+"CZE":{"Latitude":49.75,"Longitude":15.5,"Name":"Czech Republic"},
+"DEN":{"Latitude":56,"Longitude":10,"Name":"Denmark"},
+"DJI":{"Latitude":11.5,"Longitude":43,"Name":"Djibouti"},
+"DMA":{"Latitude":15.4167,"Longitude":-61.3333,"Name":"Dominica"},
+"DOM":{"Latitude":19,"Longitude":-70.6667,"Name":"Dominican Republic"},
+"ECU":{"Latitude":-2,"Longitude":-77.5,"Name":"Ecuador"},
+"EGY":{"Latitude":27,"Longitude":30,"Name":"Egypt"},
+"SLV":{"Latitude":13.8333,"Longitude":-88.9167,"Name":"El Salvador"},
+"GNQ":{"Latitude":2,"Longitude":10,"Name":"Equatorial Guinea"},
+"ERI":{"Latitude":15,"Longitude":39,"Name":"Eritrea"},
+"EST":{"Latitude":59,"Longitude":26,"Name":"Estonia"},
+"ETH":{"Latitude":8,"Longitude":38,"Name":"Ethiopia"},
+"FLK":{"Latitude":-51.75,"Longitude":-59,"Name":"Falkland Islands (Malvinas)"},
+"FRO":{"Latitude":62,"Longitude":-7,"Name":"Faroe Islands"},
+"FJI":{"Latitude":-18,"Longitude":175,"Name":"Fiji"},
+"FIN":{"Latitude":64,"Longitude":26,"Name":"Finland"},
+"FRA":{"Latitude":46,"Longitude":2,"Name":"France"},
+"GUF":{"Latitude":4,"Longitude":-53,"Name":"French Guiana"},
+"PYF":{"Latitude":-15,"Longitude":-140,"Name":"French Polynesia"},
+"ATF":{"Latitude":-43,"Longitude":67,"Name":"French Southern Territories"},
+"GAB":{"Latitude":-1,"Longitude":11.75,"Name":"Gabon"},
+"GMB":{"Latitude":13.4667,"Longitude":-16.5667,"Name":"Gambia"},
+"GEO":{"Latitude":42,"Longitude":43.5,"Name":"Georgia"},
+"GER":{"Latitude":51,"Longitude":9,"Name":"Germany"},
+"GHA":{"Latitude":8,"Longitude":-2,"Name":"Ghana"},
+"GIB":{"Latitude":36.1833,"Longitude":-5.3667,"Name":"Gibraltar"},
+"GRC":{"Latitude":39,"Longitude":22,"Name":"Greece"},
+"GRL":{"Latitude":72,"Longitude":-40,"Name":"Greenland"},
+"GRD":{"Latitude":12.1167,"Longitude":-61.6667,"Name":"Grenada"},
+"GLP":{"Latitude":16.25,"Longitude":-61.5833,"Name":"Guadeloupe"},
+"GUM":{"Latitude":13.4667,"Longitude":144.7833,"Name":"Guam"},
+"GTM":{"Latitude":15.5,"Longitude":-90.25,"Name":"Guatemala"},
+"GGY":{"Latitude":49.5,"Longitude":-2.56,"Name":"Guernsey"},
+"GIN":{"Latitude":11,"Longitude":-10,"Name":"Guinea"},
+"GNB":{"Latitude":12,"Longitude":-15,"Name":"Guinea-Bissau"},
+"GUY":{"Latitude":5,"Longitude":-59,"Name":"Guyana"},
+"HTI":{"Latitude":19,"Longitude":-72.4167,"Name":"Haiti"},
+"HMD":{"Latitude":-53.1,"Longitude":72.5167,"Name":"Heard Island and McDonald Islands"},
+"VAT":{"Latitude":41.9,"Longitude":12.45,"Name":"Holy See (Vatican City State)"},
+"HND":{"Latitude":15,"Longitude":-86.5,"Name":"Honduras"},
+"HKG":{"Latitude":22.25,"Longitude":114.1667,"Name":"Hong Kong"},
+"HUN":{"Latitude":47,"Longitude":20,"Name":"Hungary"},
+"ISL":{"Latitude":65,"Longitude":-18,"Name":"Iceland"},
+"IND":{"Latitude":20,"Longitude":77,"Name":"India"},
+"IDN":{"Latitude":-5,"Longitude":120,"Name":"Indonesia"},
+"IRN":{"Latitude":32,"Longitude":53,"Name":"Iran, Islamic Republic of"},
+"IRQ":{"Latitude":33,"Longitude":44,"Name":"Iraq"},
+"IRL":{"Latitude":53,"Longitude":-8,"Name":"Ireland"},
+"IMN":{"Latitude":54.23,"Longitude":-4.55,"Name":"Isle of Man"},
+"ISR":{"Latitude":31.5,"Longitude":34.75,"Name":"Israel"},
+"ITA":{"Latitude":42.8333,"Longitude":12.8333,"Name":"Italy"},
+"JAM":{"Latitude":18.25,"Longitude":-77.5,"Name":"Jamaica"},
+"JPN":{"Latitude":36,"Longitude":138,"Name":"Japan"},
+"JEY":{"Latitude":49.21,"Longitude":-2.13,"Name":"Jersey"},
+"JOR":{"Latitude":31,"Longitude":36,"Name":"Jordan"},
+"KAZ":{"Latitude":48,"Longitude":68,"Name":"Kazakhstan"},
+"KEN":{"Latitude":1,"Longitude":38,"Name":"Kenya"},
+"KIR":{"Latitude":1.4167,"Longitude":173,"Name":"Kiribati"},
+"PRK":{"Latitude":40,"Longitude":127,"Name":"Korea, Democratic People's Republic of"},
+"KOR":{"Latitude":37,"Longitude":127.5,"Name":"Korea, Republic of"},
+"KWT":{"Latitude":29.3375,"Longitude":47.6581,"Name":"Kuwait"},
+"KGZ":{"Latitude":41,"Longitude":75,"Name":"Kyrgyzstan"},
+"LAO":{"Latitude":18,"Longitude":105,"Name":"Lao People's Democratic Republic"},
+"LAT":{"Latitude":57,"Longitude":25,"Name":"Latvia"},
+"LBN":{"Latitude":33.8333,"Longitude":35.8333,"Name":"Lebanon"},
+"LSO":{"Latitude":-29.5,"Longitude":28.5,"Name":"Lesotho"},
+"LBR":{"Latitude":6.5,"Longitude":-9.5,"Name":"Liberia"},
+"LBY":{"Latitude":25,"Longitude":17,"Name":"Libyan Arab Jamahiriya"},
+"LIE":{"Latitude":47.1667,"Longitude":9.5333,"Name":"Liechtenstein"},
+"LTU":{"Latitude":56,"Longitude":24,"Name":"Lithuania"},
+"LUX":{"Latitude":49.75,"Longitude":6.1667,"Name":"Luxembourg"},
+"MAC":{"Latitude":22.1667,"Longitude":113.55,"Name":"Macao"},
+"MKD":{"Latitude":41.8333,"Longitude":22,"Name":"Macedonia, the former Yugoslav Republic of"},
+"MDG":{"Latitude":-20,"Longitude":47,"Name":"Madagascar"},
+"MWI":{"Latitude":-13.5,"Longitude":34,"Name":"Malawi"},
+"MYS":{"Latitude":2.5,"Longitude":112.5,"Name":"Malaysia"},
+"MDV":{"Latitude":3.25,"Longitude":73,"Name":"Maldives"},
+"MLI":{"Latitude":17,"Longitude":-4,"Name":"Mali"},
+"MLT":{"Latitude":35.8333,"Longitude":14.5833,"Name":"Malta"},
+"MHL":{"Latitude":9,"Longitude":168,"Name":"Marshall Islands"},
+"MTQ":{"Latitude":14.6667,"Longitude":-61,"Name":"Martinique"},
+"MRT":{"Latitude":20,"Longitude":-12,"Name":"Mauritania"},
+"MUS":{"Latitude":-20.2833,"Longitude":57.55,"Name":"Mauritius"},
+"MYT":{"Latitude":-12.8333,"Longitude":45.1667,"Name":"Mayotte"},
+"MEX":{"Latitude":23,"Longitude":-102,"Name":"Mexico"},
+"FSM":{"Latitude":6.9167,"Longitude":158.25,"Name":"Micronesia, Federated States of"},
+"MDA":{"Latitude":47,"Longitude":29,"Name":"Moldova, Republic of"},
+"MON":{"Latitude":43.7333,"Longitude":7.4,"Name":"Monaco"},
+"MNG":{"Latitude":46,"Longitude":105,"Name":"Mongolia"},
+"MNE":{"Latitude":42,"Longitude":19,"Name":"Montenegro"},
+"MSR":{"Latitude":16.75,"Longitude":-62.2,"Name":"Montserrat"},
+"MAR":{"Latitude":32,"Longitude":-5,"Name":"Morocco"},
+"MOZ":{"Latitude":-18.25,"Longitude":35,"Name":"Mozambique"},
+"MMR":{"Latitude":22,"Longitude":98,"Name":"Myanmar"},
+"NAM":{"Latitude":-22,"Longitude":17,"Name":"Namibia"},
+"NRU":{"Latitude":-0.5333,"Longitude":166.9167,"Name":"Nauru"},
+"NPL":{"Latitude":28,"Longitude":84,"Name":"Nepal"},
+"NED":{"Latitude":52.5,"Longitude":5.75,"Name":"Netherlands"},
+"ANT":{"Latitude":12.25,"Longitude":-68.75,"Name":"Netherlands Antilles"},
+"NCL":{"Latitude":-21.5,"Longitude":165.5,"Name":"New Caledonia"},
+"NZL":{"Latitude":-41,"Longitude":174,"Name":"New Zealand"},
+"NIC":{"Latitude":13,"Longitude":-85,"Name":"Nicaragua"},
+"NER":{"Latitude":16,"Longitude":8,"Name":"Niger"},
+"NGA":{"Latitude":10,"Longitude":8,"Name":"Nigeria"},
+"NIU":{"Latitude":-19.0333,"Longitude":-169.8667,"Name":"Niue"},
+"NFK":{"Latitude":-29.0333,"Longitude":167.95,"Name":"Norfolk Island"},
+"MNP":{"Latitude":15.2,"Longitude":145.75,"Name":"Northern Mariana Islands"},
+"NOR":{"Latitude":62,"Longitude":10,"Name":"Norway"},
+"OMN":{"Latitude":21,"Longitude":57,"Name":"Oman"},
+"PAK":{"Latitude":30,"Longitude":70,"Name":"Pakistan"},
+"PLW":{"Latitude":7.5,"Longitude":134.5,"Name":"Palau"},
+"PLE":{"Latitude":32,"Longitude":35.25,"Name":"Palestinian Territory, Occupied"},
+"PAN":{"Latitude":9,"Longitude":-80,"Name":"Panama"},
+"PNG":{"Latitude":-6,"Longitude":147,"Name":"Papua New Guinea"},
+"PAR":{"Latitude":-23,"Longitude":-58,"Name":"Paraguay"},
+"PER":{"Latitude":-10,"Longitude":-76,"Name":"Peru"},
+"PHL":{"Latitude":13,"Longitude":122,"Name":"Philippines"},
+"PCN":{"Latitude":-24.7,"Longitude":-127.4,"Name":"Pitcairn"},
+"POL":{"Latitude":52,"Longitude":20,"Name":"Poland"},
+"POR":{"Latitude":39.5,"Longitude":-8,"Name":"Portugal"},
+"PRI":{"Latitude":18.25,"Longitude":-66.5,"Name":"Puerto Rico"},
+"QAT":{"Latitude":25.5,"Longitude":51.25,"Name":"Qatar"},
+"REU":{"Latitude":-21.1,"Longitude":55.6,"Name":"RÃ©union"},
+"ROU":{"Latitude":46,"Longitude":25,"Name":"Romania"},
+"RUS":{"Latitude":60,"Longitude":100,"Name":"Russian Federation"},
+"RWA":{"Latitude":-2,"Longitude":30,"Name":"Rwanda"},
+"SHN":{"Latitude":-15.9333,"Longitude":-5.7,"Name":"Saint Helena, Ascension and Tristan da Cunha"},
+"KNA":{"Latitude":17.3333,"Longitude":-62.75,"Name":"Saint Kitts and Nevis"},
+"LCA":{"Latitude":13.8833,"Longitude":-61.1333,"Name":"Saint Lucia"},
+"SPM":{"Latitude":46.8333,"Longitude":-56.3333,"Name":"Saint Pierre and Miquelon"},
+"VCT":{"Latitude":13.25,"Longitude":-61.2,"Name":"Saint Vincent and the Grenadines"},
+"WSM":{"Latitude":-13.5833,"Longitude":-172.3333,"Name":"Samoa"},
+"SMR":{"Latitude":43.7667,"Longitude":12.4167,"Name":"San Marino"},
+"STP":{"Latitude":1,"Longitude":7,"Name":"Sao Tome and Principe"},
+"SAU":{"Latitude":25,"Longitude":45,"Name":"Saudi Arabia"},
+"SEN":{"Latitude":14,"Longitude":-14,"Name":"Senegal"},
+"SRB":{"Latitude":44,"Longitude":21,"Name":"Serbia"},
+"SYC":{"Latitude":-4.5833,"Longitude":55.6667,"Name":"Seychelles"},
+"SLE":{"Latitude":8.5,"Longitude":-11.5,"Name":"Sierra Leone"},
+"SGP":{"Latitude":1.3667,"Longitude":103.8,"Name":"Singapore"},
+"SVK":{"Latitude":48.6667,"Longitude":19.5,"Name":"Slovakia"},
+"SLO":{"Latitude":46,"Longitude":15,"Name":"Slovenia"},
+"SLB":{"Latitude":-8,"Longitude":159,"Name":"Solomon Islands"},
+"SOM":{"Latitude":10,"Longitude":49,"Name":"Somalia"},
+"RSA":{"Latitude":-29,"Longitude":24,"Name":"South Africa"},
+"SGS":{"Latitude":-54.5,"Longitude":-37,"Name":"South Georgia and the South Sandwich Islands"},
+"ESP":{"Latitude":40,"Longitude":-4,"Name":"Spain"},
+"LKA":{"Latitude":7,"Longitude":81,"Name":"Sri Lanka"},
+"SDN":{"Latitude":15,"Longitude":30,"Name":"Sudan"},
+"SUR":{"Latitude":4,"Longitude":-56,"Name":"Suriname"},
+"SJM":{"Latitude":78,"Longitude":20,"Name":"Svalbard and Jan Mayen"},
+"SWZ":{"Latitude":-26.5,"Longitude":31.5,"Name":"Swaziland"},
+"SWE":{"Latitude":62,"Longitude":15,"Name":"Sweden"},
+"SUI":{"Latitude":47,"Longitude":8,"Name":"Switzerland"},
+"SYR":{"Latitude":35,"Longitude":38,"Name":"Syrian Arab Republic"},
+"TPE":{"Latitude":23.5,"Longitude":121,"Name":"Taiwan, Province of China"},
+"TJK":{"Latitude":39,"Longitude":71,"Name":"Tajikistan"},
+"TZA":{"Latitude":-6,"Longitude":35,"Name":"Tanzania, United Republic of"},
+"THA":{"Latitude":15,"Longitude":100,"Name":"Thailand"},
+"TLS":{"Latitude":-8.55,"Longitude":125.5167,"Name":"Timor-Leste"},
+"TGO":{"Latitude":8,"Longitude":1.1667,"Name":"Togo"},
+"TKL":{"Latitude":-9,"Longitude":-172,"Name":"Tokelau"},
+"TON":{"Latitude":-20,"Longitude":-175,"Name":"Tonga"},
+"TTO":{"Latitude":11,"Longitude":-61,"Name":"Trinidad and Tobago"},
+"TUN":{"Latitude":34,"Longitude":9,"Name":"Tunisia"},
+"TUR":{"Latitude":39,"Longitude":35,"Name":"Turkey"},
+"TKM":{"Latitude":40,"Longitude":60,"Name":"Turkmenistan"},
+"TCA":{"Latitude":21.75,"Longitude":-71.5833,"Name":"Turks and Caicos Islands"},
+"TUV":{"Latitude":-8,"Longitude":178,"Name":"Tuvalu"},
+"UGA":{"Latitude":1,"Longitude":32,"Name":"Uganda"},
+"UKR":{"Latitude":49,"Longitude":32,"Name":"Ukraine"},
+"ARE":{"Latitude":24,"Longitude":54,"Name":"United Arab Emirates"},
+"GBR":{"Latitude":54,"Longitude":-2,"Name":"United Kingdom"},
+"USA":{"Latitude":38,"Longitude":-97,"Name":"United States"},
+"UMI":{"Latitude":19.2833,"Longitude":166.6,"Name":"United States Minor Outlying Islands"},
+"URU":{"Latitude":-33,"Longitude":-56,"Name":"Uruguay"},
+"UZB":{"Latitude":41,"Longitude":64,"Name":"Uzbekistan"},
+"VUT":{"Latitude":-16,"Longitude":167,"Name":"Vanuatu"},
+"VEN":{"Latitude":8,"Longitude":-66,"Name":"Venezuela, Bolivarian Republic of"},
+"VIE":{"Latitude":16,"Longitude":106,"Name":"Viet Nam"},
+"VGB":{"Latitude":18.5,"Longitude":-64.5,"Name":"Virgin Islands, British"},
+"VIR":{"Latitude":18.3333,"Longitude":-64.8333,"Name":"Virgin Islands, U.S."},
+"WLF":{"Latitude":-13.3,"Longitude":-176.2,"Name":"Wallis and Futuna"},
+"ESH":{"Latitude":24.5,"Longitude":-13,"Name":"Western Sahara"},
+"YEM":{"Latitude":15,"Longitude":48,"Name":"Yemen"},
+"ZMB":{"Latitude":-15,"Longitude":30,"Name":"Zambia"},
+"ZWE":{"Latitude":-20,"Longitude":30,"Name":"Zimbabwe"}}

@@ -6,3 +6,22 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
+
+.btn{
+	margin-bottom: 5px;
+	width:80px;
+}
+
+.btn-row{
+	display:inline-block;
+	width:100%;
+	margin: 0 auto;
+}
+
+#reset{
+	width:97.5%;
+}
+
+#statsArea{
+	display:inline-block;
+}
