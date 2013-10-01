@@ -1,5 +1,7 @@
 $( document ).ready(function() {
 	clearMap();
+	countCountries(2003);
+	$( "#year" ).text("2003");
 	$( "#slider" ).slider({
 	  range: "min",
 	  value: 2003,
@@ -7,10 +9,11 @@ $( document ).ready(function() {
 	  max: 2013,
 	  step: 1,
 	  slide: function( event, ui ) {
-	  	var selection = $( "#slider" ).slider( "value" );
-	  	countCountries(selection);
+	  	$( "#year" ).text( ui.value );
+	  	countCountries(ui.value);
 	  },
 	});
+	$( ".ui-slider-handle" ).focus();
 });
 
 
@@ -96,9 +99,13 @@ function generateColor(percent) {
     // opacity = Math.abs((percent/100)-0.5)+0.5;
     opacity = 0.75;
     colorString= "rgba(" + newColor.r+","+newColor.g+","+newColor.b+","+opacity+")";
-    console.log(colorString);
     return(colorString);
 }
+
+
+$('body').on('click', function(){
+      $( ".ui-slider-handle" ).focus();
+});
 
 var MENS_TENNIS_STATS = [
 {"year":2012,"gender":"m","tid":4,"mid":591633,"player1":"Andy Murray","player2":"Novak Djokovic","country1":"GBR","country2":"SRB","firstServe1":"65%","firstServe2":"62%","ace1":5,"ace2":7,"double1":4,"double2":5,"firstPointWon1":"62%","firstPointWon2":"63%","secPointWon1":"48%","secPointWon2":"42%","fastServe1":212,"fastServe2":205,"avgFirstServe1":178,"avgFirstServe2":186,"avgSecServe1":146,"avgSecServe2":146,"break1":"47%","break2":"50%","return1":"44%","return2":"42%","total1":160,"total2":155,"winner1":31,"winner2":40,"error1":56,"error2":65,"net1":"67%","net2":"70%"},

@@ -4,10 +4,18 @@ body {
 
 h1{
 	color:purple;
+	font-weight: 100;
+	letter-spacing: 4px;
 }
 
 #viz {
   text-align: center;
+}
+
+#year{
+	text-align: right;
+	color:purple;
+	font-size:18px;
 }
 
 #mapArea{
@@ -36,6 +44,19 @@ h1{
 	margin: 0 auto;
 }
 
+.ui-slider{
+	background-image:none;
+	background: purple;
+	border:none;
+}
+
+.ui-widget-content { background: purple; opacity:0.5; }
+.ui-widget-content .ui-state-default { background-image:none; background: #EE82EE; border-color:#EE82EE;}
+.ui-state-focus{text-decoration: none; border:0px; background-image: none; outline: none;}
+.ui-slider a {outline:none;}
+.ui-slider-handle {background: purple; border:none; outline: none;}
+.ui-slider-range{background: purple; opacity:0.5;}
+
 #reset{
 	width:97.5%;
 }
@@ -45,8 +66,8 @@ h1{
 }
 
 path {
-  /*stroke: fuchsia;*/
-  stroke: grey;
+  stroke: fuchsia;
+  /*stroke: #D3D3D3;*/
   stroke-width: 0.35px;
   fill: black;
 }
