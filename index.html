@@ -2,23 +2,23 @@
 <html>
   <head>
     <title>Men's US Open Visualization</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"  charset="UTF-8" >
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" >
     <link href="css/application.css" rel="stylesheet" type="text/css" >
   </head>
   <body>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-        </div>
-      </div>
-    </div>
     <div class="container">
     	<div class="row">
 	        <div id="viz" class="col-md-10 col-md-offset-1">
-		        <h1>Men's US Open Victories</h1>
-		        <div class="btn-row">
+		        <h1>Who's Playing in the Men's US Open?</h1>
+				<div class="btn-row"> 
+				 	<button type="button" id="reset" onClick="countCountries(0);" class="btn btn-default btn-success"> Show All </button>
+				</div> 
+				<div id="mapArea" class="col-md-12"></div>
+				<div id="slider"></div>
+				<div class="btn-row">
 					<button type="button" onClick="countCountries(2003);" class="btn btn-default btn-success ">2003</button>
 					<button type="button" onClick="countCountries(2004);" class="btn btn-default btn-success ">2004</button>
 					<button type="button" onClick="countCountries(2005);" class="btn btn-default btn-success ">2005</button>
@@ -31,16 +31,14 @@
 					<button type="button" onClick="countCountries(2012);" class="btn btn-default btn-success ">2012</button>
 					<button type="button" onClick="countCountries(2013);" class="btn btn-default btn-success ">2013</button>
 				</div>
-				 <div class="btn-row"> 
-				 	<button type="button" id="reset" onClick="resetStats();" class="btn btn-default btn-success"> Reset </button>
-				</div>
-				<div id="statsArea" class="col-md-12"></div>
 			</div>
 		</div>
     </div>
-    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="js/application.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://d3js.org/topojson.v0.min.js"></script>
   </body>
 </html>

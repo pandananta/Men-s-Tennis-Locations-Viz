@@ -1,15 +1,33 @@
 body {
-  padding-top: 50px;
+	background-color: black;
+}
+
+h1{
+	color:purple;
 }
 
 #viz {
-  padding: 40px 15px;
   text-align: center;
+}
+
+#mapArea{
+	display:inline-block;
 }
 
 .btn{
 	margin-bottom: 5px;
 	width:80px;
+	color:green;
+	background: none;
+	border-color: green;
+	font-weight: 200;
+	letter-spacing: 1px;
+}
+
+.btn:hover{
+	background: none;
+	color: green;
+	opacity: 0.8;
 }
 
 .btn-row{
@@ -24,4 +42,15 @@ body {
 
 #statsArea{
 	display:inline-block;
+}
+
+path {
+  /*stroke: fuchsia;*/
+  stroke: grey;
+  stroke-width: 0.35px;
+  fill: black;
+}
+
+circle{
+	/*stroke:rgba(255,127,0,0.8);*/
 }

@@ -1,7 +1,23 @@
+$( document ).ready(function() {
+	clearMap();
+	$( "#slider" ).slider({
+	  range: "min",
+	  value: 2003,
+	  min: 2003,
+	  max: 2013,
+	  step: 1,
+	  slide: function( event, ui ) {
+	  	var selection = $( "#slider" ).slider( "value" );
+	  	countCountries(selection);
+	  },
+	});
+});
+
+
 function countCountries(year){
 	var countryCount = {}
 	for(var i =0; i<MENS_TENNIS_STATS.length; i++){
-		if (MENS_TENNIS_STATS[i]["year"]== year){
+		if (year==0 || MENS_TENNIS_STATS[i]["year"]== year){
 			var country1 = MENS_TENNIS_STATS[i]["country1"];
 			var country2 = MENS_TENNIS_STATS[i]["country2"];
 			if (countryCount[country1] == null){
@@ -19,43 +35,70 @@ function countCountries(year){
 			}
 		}
 	}
-	var textSpace = document.getElementById('statsArea')
-	textSpace.innerHTML = "<h1> In " +year+ " </h1><ul>";
-	var countryNumber = 1;
+	// window.svg.selectAll("circle").data([]).exit().transition().duration(1000).style("opacity", 1e-6).remove();
+	window.svg.selectAll("circle").data([]).exit().remove();
+	var countryNumber =0;
 	for(i in countryCount){
-		var percent = (100 * countryCount[i]["wins"] / countryCount[i]["total"]).toFixed(2); 
-		textSpace.innerHTML += "<li>"+countryNumber+". "+countryCount[i]["name"]+" played "+countryCount[i]["total"]+" games and won "+percent+"%. Coords: "+countryCount[i]["lat"]+" ,"+countryCount[i]["long"];
-		countryNumber ++;
+		countryNumber++;
+		var percent = (100*countryCount[i]["wins"] / countryCount[i]["total"]).toFixed(2); 
+		console.log(countryNumber+". "+countryCount[i]["name"]+" played "+countryCount[i]["total"]+" games and won "+percent+"%. Coords: "+countryCount[i]["lat"]+" ,"+countryCount[i]["long"]);
+		if(year!=0)
+			window.svg.append("circle").attr("r",8*Math.sqrt(countryCount[i]["total"]/Math.PI)).style("fill", generateColor(percent)).attr("transform", function() {return "translate(" + projection([countryCount[i]["long"],countryCount[i]["lat"]]) + ")";});
+		else
+			window.svg.append("circle").attr("r",8*Math.sqrt((countryCount[i]["total"]/11)/Math.PI)).style("fill", generateColor(percent)).attr("transform", function() {return "translate(" + projection([countryCount[i]["long"],countryCount[i]["lat"]]) + ")";});
+
 	}
-	textSpace += "</ul>";
 }
 
-function resetStats(){
-	var countryCount = {}
-		for(var i =0; i<MENS_TENNIS_STATS.length; i++){
-			if (countryCount[MENS_TENNIS_STATS[i]["country1"]] == null){
-				countryCount[MENS_TENNIS_STATS[i]["country1"]] = 1;
-			}
-			else{
-				countryCount[MENS_TENNIS_STATS[i]["country1"]] += 1;
-			}
-			if (countryCount[MENS_TENNIS_STATS[i]["country2"]] == null){
-				countryCount[MENS_TENNIS_STATS[i]["country2"]] = 1;
-			}
-			else{
-				countryCount[MENS_TENNIS_STATS[i]["country2"]] += 1;
-			}
-		}
-		var textSpace = document.getElementById('statsArea')
-		textSpace.innerHTML = "<h1> From 2003 to 2013 </h1><ul>";
-		var countryNumber = 1;
-		for(i in countryCount){
-			textSpace.innerHTML += "<li>" + countryNumber+". "+i + " played " + countryCount[i] + " games. </li>";
-			countryNumber ++;
-		}
-		textSpace += "</ul>";
+
+
+function clearMap(){
+	window.margin = {top: 10, left: 10, bottom: 10, right: 10}
+	  , width = parseInt(d3.select('#mapArea').style('width'))
+	  , width = width - margin.left - margin.right
+	  , mapRatio = .45
+	  , height = width * mapRatio;
+
+	window.projection = d3.geo.mercator();
+
+	window.svg = d3.select("#mapArea").append("svg")
+	    .attr("width", width)
+	    .attr("height", height);
+
+	window.path = d3.geo.path()
+	    .projection(projection);
+
+	window.g = svg.append("g");
+
+	// load and display the World
+	d3.json("js/world-110m2.json", function(error, topology) {
+	    g.selectAll("path")
+	      .data(topojson.object(topology, topology.objects.countries)
+	          .geometries)
+	    .enter()
+	      .append("path")
+	      .attr("d", path)
+	});
 }
 
+function generateColor(percent) {
+    var color2 = {r:0, g:255, b:0};
+	var color1 = {r:255, g:40, b:0};
+    var newColor = {};
+
+    function makeChannel(a, b) {
+        return(a + Math.round((b-a)*(percent/100)));
+    }
+
+    newColor.r = makeChannel(color1.r, color2.r);
+    newColor.g = makeChannel(color1.g, color2.g);
+    newColor.b = makeChannel(color1.b, color2.b);
+    // opacity = Math.abs((percent/100)-0.5)+0.5;
+    opacity = 0.75;
+    colorString= "rgba(" + newColor.r+","+newColor.g+","+newColor.b+","+opacity+")";
+    console.log(colorString);
+    return(colorString);
+}
 
 var MENS_TENNIS_STATS = [
 {"year":2012,"gender":"m","tid":4,"mid":591633,"player1":"Andy Murray","player2":"Novak Djokovic","country1":"GBR","country2":"SRB","firstServe1":"65%","firstServe2":"62%","ace1":5,"ace2":7,"double1":4,"double2":5,"firstPointWon1":"62%","firstPointWon2":"63%","secPointWon1":"48%","secPointWon2":"42%","fastServe1":212,"fastServe2":205,"avgFirstServe1":178,"avgFirstServe2":186,"avgSecServe1":146,"avgSecServe2":146,"break1":"47%","break2":"50%","return1":"44%","return2":"42%","total1":160,"total2":155,"winner1":31,"winner2":40,"error1":56,"error2":65,"net1":"67%","net2":"70%"},
