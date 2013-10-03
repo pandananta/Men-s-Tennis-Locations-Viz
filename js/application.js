@@ -1,5 +1,40 @@
 $( document ).ready(function() {
-	clearMap();
+	var margin = {top: 10, left: 10, bottom: 10, right: 10}
+	  , width = parseInt(d3.select('#mapArea').style('width'))
+	  , width = width - margin.left - margin.right
+	  , mapRatio = .45
+	  , height = width * mapRatio;
+
+	window.projection = d3.geo.mercator();
+
+	window.svg = d3.select("#mapArea").append("svg")
+		.attr("width", width)
+		.attr("height", height);
+
+	
+	var path = d3.geo.path()
+		.projection(projection);
+
+	var g = svg.append("g");
+
+	window.tooltip = d3.select("body")
+		.append("tooltip")
+		.style("position", "absolute")
+		.style("z-index", "10")
+		.style("visibility", "hidden");
+
+
+	// load and display the World
+	d3.json("js/world-110m2.json", function(error, topology) {
+		g.selectAll("path")
+		  .data(topojson.object(topology, topology.objects.countries)
+			  .geometries)
+		.enter()
+		  .append("path")
+		  .attr("d", path)
+	});
+
+
 	countCountries(2003);
 	$( "#year" ).text("2003");
 	$( "#slider" ).slider({
@@ -9,8 +44,8 @@ $( document ).ready(function() {
 	  max: 2013,
 	  step: 1,
 	  slide: function( event, ui ) {
-	  	$( "#year" ).text( ui.value );
-	  	countCountries(ui.value);
+		$( "#year" ).text( ui.value );
+		countCountries(ui.value);
 	  },
 	});
 	$( ".ui-slider-handle" ).focus();
@@ -18,93 +53,68 @@ $( document ).ready(function() {
 
 
 function countCountries(year){
-	var countryCount = {}
+	var countryCount = {};
+	var coords = [];
 	for(var i =0; i<MENS_TENNIS_STATS.length; i++){
-		if (year==0 || MENS_TENNIS_STATS[i]["year"]== year){
+		if (MENS_TENNIS_STATS[i]["year"]== year){
 			var country1 = MENS_TENNIS_STATS[i]["country1"];
 			var country2 = MENS_TENNIS_STATS[i]["country2"];
 			if (countryCount[country1] == null){
-				countryCount[country1] = {"total":1, "wins":1, "lat": COUNTRIES[country1]["Latitude"], "long": COUNTRIES[country1]["Longitude"], "name": COUNTRIES[country1]["Name"]};
+				countryCount[country1] = {'key':country1, 'total':1, 'wins':1, 'lat': COUNTRIES[country1]["Latitude"], 'long': COUNTRIES[country1]["Longitude"], 'name': COUNTRIES[country1]["Name"]};
 			}
 			else{
-				countryCount[country1]["total"] +=1;
-				countryCount[country1]["wins"] +=1;
+				countryCount[country1]['total'] +=1;
+				countryCount[country1]['wins'] +=1;
 			}
 			if (countryCount[country2] == null){
-				countryCount[country2] = {"total":1, "wins":0, "lat": COUNTRIES[country2]["Latitude"], "long": COUNTRIES[country2]["Longitude"], "name": COUNTRIES[country2]["Name"]};
+				countryCount[country2] = {'key':country2, 'total':1, 'wins':0, 'lat': COUNTRIES[country2]["Latitude"], 'long': COUNTRIES[country2]["Longitude"], 'name': COUNTRIES[country2]["Name"]};
 			}
 			else{
-				countryCount[country2]["total"] +=1;
+				countryCount[country2]['total'] +=1;
 			}
 		}
 	}
-	// window.svg.selectAll("circle").data([]).exit().transition().duration(1000).style("opacity", 1e-6).remove();
-	window.svg.selectAll("circle").data([]).exit().remove();
-	var countryNumber =0;
+
 	for(i in countryCount){
-		countryNumber++;
-		var percent = (100*countryCount[i]["wins"] / countryCount[i]["total"]).toFixed(2); 
-		console.log(countryNumber+". "+countryCount[i]["name"]+" played "+countryCount[i]["total"]+" games and won "+percent+"%. Coords: "+countryCount[i]["lat"]+" ,"+countryCount[i]["long"]);
-		if(year!=0)
-			window.svg.append("circle").attr("r",8*Math.sqrt(countryCount[i]["total"]/Math.PI)).style("fill", generateColor(percent)).attr("transform", function() {return "translate(" + projection([countryCount[i]["long"],countryCount[i]["lat"]]) + ")";});
-		else
-			window.svg.append("circle").attr("r",8*Math.sqrt((countryCount[i]["total"]/11)/Math.PI)).style("fill", generateColor(percent)).attr("transform", function() {return "translate(" + projection([countryCount[i]["long"],countryCount[i]["lat"]]) + ")";});
-
+		coords.push(countryCount[i]);
 	}
+
+	svg.selectAll("circle").data([]).exit().remove();
+	svg.selectAll("circle")
+	   .data(coords)
+	   .enter()
+	   .append("circle")
+	   .attr("transform", function(d) {return "translate(" + projection([d.long,d.lat]) + ")";})
+	   .attr("r", function(d) {return 8*Math.sqrt(d.total/Math.PI);})
+	   .style("fill", function(d) {var percent = (100*d.wins/d.total); return generateColor(percent); })
+	   .on("mouseover", function(d){return tooltip.style("visibility", "visible").html("<b>"+d.name+"</b></br>Matches Played: "+d.total+"</br>Matches Won: "+Math.round(100*d.wins/d.total)+"%");})
+	   .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+	   .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+	;
 }
 
-
-
-function clearMap(){
-	window.margin = {top: 10, left: 10, bottom: 10, right: 10}
-	  , width = parseInt(d3.select('#mapArea').style('width'))
-	  , width = width - margin.left - margin.right
-	  , mapRatio = .45
-	  , height = width * mapRatio;
-
-	window.projection = d3.geo.mercator();
-
-	window.svg = d3.select("#mapArea").append("svg")
-	    .attr("width", width)
-	    .attr("height", height);
-
-	window.path = d3.geo.path()
-	    .projection(projection);
-
-	window.g = svg.append("g");
-
-	// load and display the World
-	d3.json("js/world-110m2.json", function(error, topology) {
-	    g.selectAll("path")
-	      .data(topojson.object(topology, topology.objects.countries)
-	          .geometries)
-	    .enter()
-	      .append("path")
-	      .attr("d", path)
-	});
-}
 
 function generateColor(percent) {
-    var color2 = {r:0, g:255, b:0};
+	var color2 = {r:0, g:255, b:0};
 	var color1 = {r:255, g:40, b:0};
-    var newColor = {};
+	var newColor = {};
 
-    function makeChannel(a, b) {
-        return(a + Math.round((b-a)*(percent/100)));
-    }
+	function makeChannel(a, b) {
+		return(a + Math.round((b-a)*(percent/100)));
+	}
 
-    newColor.r = makeChannel(color1.r, color2.r);
-    newColor.g = makeChannel(color1.g, color2.g);
-    newColor.b = makeChannel(color1.b, color2.b);
-    // opacity = Math.abs((percent/100)-0.5)+0.5;
-    opacity = 0.75;
-    colorString= "rgba(" + newColor.r+","+newColor.g+","+newColor.b+","+opacity+")";
-    return(colorString);
+	newColor.r = makeChannel(color1.r, color2.r);
+	newColor.g = makeChannel(color1.g, color2.g);
+	newColor.b = makeChannel(color1.b, color2.b);
+	// opacity = Math.abs((percent/100)-0.5)+0.5;
+	opacity = 0.75;
+	colorString= "rgba(" + newColor.r+","+newColor.g+","+newColor.b+","+opacity+")";
+	return(colorString);
 }
 
 
-$('body').on('click', function(){
-      $( ".ui-slider-handle" ).focus();
+$('html').on('click', function(){
+	  $( ".ui-slider-handle" ).focus();
 });
 
 var MENS_TENNIS_STATS = [
