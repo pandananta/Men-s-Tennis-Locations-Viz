@@ -25,7 +25,7 @@ $( document ).ready(function() {
 
 
 	// load and display the World
-	d3.json("js/world-110m2.json", function(error, topology) {
+	d3.json("js/world-map.json", function(error, topology) {
 		g.selectAll("path")
 		  .data(topojson.object(topology, topology.objects.countries)
 			  .geometries)
